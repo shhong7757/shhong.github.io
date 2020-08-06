@@ -15,6 +15,7 @@ const alignCenter = css`
 
 const font = css`
   ${alignCenter}
+  cursor: pointer;
   margin-top: 14px;
   margin-bottom: 14px;
   color: black;

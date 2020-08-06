@@ -215,6 +215,7 @@ const PostTemplate = ({
         css={
           isScrollButtonShow
             ? css`
+                cursor: pointer;
                 position: fixed;
                 width: 56px;
                 height: 56px;
@@ -225,6 +226,7 @@ const PostTemplate = ({
                 transition: bottom 0.2s, opacity 0.2s;
               `
             : css`
+                cursor: pointer;
                 bottom: -56px;
                 transition: bottom 0.2s, opacity 0.2s;
               `

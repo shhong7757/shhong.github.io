@@ -53,6 +53,7 @@ const Category = ({ category, categoryOfSelectedTitle, postTitles }: Props) => {
     <Fragment>
       <div
         css={css`
+          cursor: pointer;
           display: flex;
           flex-direction: row;
           margin-bottom: 8px;
@@ -76,6 +77,7 @@ const Category = ({ category, categoryOfSelectedTitle, postTitles }: Props) => {
               <li
                 key={postTitle.id}
                 css={css`
+                  cursor: pointer;
                   list-style-type: 'none';
                   padding: 4px 0px;
                 `}
