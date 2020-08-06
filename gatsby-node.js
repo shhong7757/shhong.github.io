@@ -24,7 +24,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
 
-  const postTemplate = path.resolve('src/templates/blog-post.tsx');
+  const postTemplate = path.resolve('src/templates/BlogPost.tsx');
 
   const result = await graphql(`
     {

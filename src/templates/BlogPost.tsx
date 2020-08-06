@@ -1,14 +1,16 @@
 /** @jsx jsx */
 import { graphql } from 'gatsby';
-import { jsx, css } from '@emotion/core';
+import { jsx, css, keyframes } from '@emotion/core';
 import { useMemo, useState, useEffect, useCallback } from 'react';
 
-import useWindowWidth from '../hooks/useWindow';
+import useWindowDimensions from '../hooks/useWindowDimensions';
+import useWindowPageYOffset from '../hooks/useWindowPageYOffset';
 
 import GroupByCategory from '../components/GroupByCategory';
 import Layout from '../components/Layout';
 import Utterances from '../components/Utterances';
 
+import ArrowUp from '../../contents/assets/arrow_up.svg';
 import Menu from '../../contents/assets/menu.svg';
 
 import 'prismjs/themes/prism-okaidia.css';
@@ -78,6 +80,7 @@ const PostTemplate = ({
   data, // this prop will be injected by the GraphQL query below.
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrollButtonShow, setIsScrollButtonShow] = useState(false);
   const [reactive, setReactive] = useState(false);
 
   const {
@@ -88,7 +91,12 @@ const PostTemplate = ({
     },
   } = data; // data.markdownRemark holds our post data
 
-  const windowWidth = useWindowWidth();
+  const {
+    height: windowInnerHeight,
+    width: windowInnerWidth,
+  } = useWindowDimensions();
+
+  const windowPageYOffset = useWindowPageYOffset();
 
   const categoryGroups: CategoryGroup[] = useMemo(() => {
     return group.map(g => {
@@ -115,13 +123,21 @@ const PostTemplate = ({
   ]);
 
   useEffect(() => {
-    if (windowWidth && windowWidth < 1024) setReactive(true);
+    if (windowInnerWidth && windowInnerWidth < 1024) setReactive(true);
     else setReactive(false);
-  }, [windowWidth]);
+  }, [windowInnerWidth]);
+
+  useEffect(() => {
+    setIsScrollButtonShow(windowPageYOffset > 0);
+  }, [windowPageYOffset]);
 
   useEffect(() => setIsOpen(false), [reactive]);
 
   const handleMenuClick = useCallback(() => setIsOpen(!isOpen), [isOpen]);
+
+  const handleScrollButtonClick = useCallback(() => {
+    window.scroll({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const navContainerCombine = useMemo(
     () =>
@@ -195,6 +211,34 @@ const PostTemplate = ({
           </article>
         </div>
       </main>
+      <div
+        css={
+          isScrollButtonShow
+            ? css`
+                position: fixed;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                bottom: 20px;
+                right: 20px;
+                background-color: black;
+                transition: bottom 0.2s, opacity 0.2s;
+              `
+            : css`
+                bottom: -56px;
+                transition: bottom 0.2s, opacity 0.2s;
+              `
+        }
+        onClick={handleScrollButtonClick}
+      >
+        <div
+          css={css`
+            padding: 16px;
+          `}
+        >
+          <ArrowUp fill="white" width={24} height={24} />
+        </div>
+      </div>
     </Layout>
   );
 };
