@@ -53,7 +53,8 @@ const navContainer = css`
 
 const navWrapper = css`
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const subNavWrapper = css`
